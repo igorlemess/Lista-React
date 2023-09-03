@@ -11,7 +11,7 @@ function App() {
   const [itens,setitens] = useState([])
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     const item = {
@@ -21,7 +21,13 @@ function App() {
       done: false,
     };
 
-    console.log(item)
+    await fetch(API + "/todos", {
+      method: "POST" , 
+      body: JSON.stringify(item),
+      headers: {
+        "Content-Type": "application/json" ,
+      },
+    })
 
     setTitle("");
     setQtde("");
@@ -51,10 +57,10 @@ function App() {
             <label htmlFor="qtde">Quantidade</label>
             <input 
             type="text" 
-            name="title" 
+            name="qtde" 
             placeholder="Quantidade" 
-            onChange={(e) => setTitle(e.target.value)}
-            value={title || ""}
+            onChange={(e) => setQtde(e.target.value)}
+            value={qtde || ""}
             required
             />
           </div>
@@ -62,7 +68,7 @@ function App() {
         </form>
       </div>
       
-      <div className="">
+      <div className="lista">
         <h2>Lista de itens:</h2>
         {itens.length === 0 && <p>Não há tarefas</p>}
       </div>
